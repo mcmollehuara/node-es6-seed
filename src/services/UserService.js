@@ -1,4 +1,4 @@
-const { knex } = require('../config/db');
+const { knex } = require('../config/db.pg');
 const UserModel = require('../models/UserModel');
 const { toUnixEpoch } = require('../helpers/Datetime');
 

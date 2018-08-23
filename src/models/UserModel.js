@@ -1,4 +1,4 @@
-const { knex } = require('../config/db');
+const { knex } = require('../config/db.pg');
 const userType = require('../types/user');
 
 class UserModel {

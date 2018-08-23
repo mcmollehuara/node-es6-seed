@@ -1,0 +1,5 @@
+{
+    "helpers.logger.throw": "Falta servidor interno",
+    "api.user.notFound": "Usuario no encontrado",
+    "cron.everySecond.tick": "Vera esta mensaje cada segundo"
+  }

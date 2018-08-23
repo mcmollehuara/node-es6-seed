@@ -4,14 +4,14 @@ const { join } = require('path');
 /* i18n */
 i18n.configure({
   locales: [
-    'pt-BR',
+    'pt-PE',
     'en-US',
   ],
   fallbacks: {
-    pt: 'pt-BR',
+    pt: 'pt-PE',
     en: 'en-US',
   },
-  defaultLocale: 'pt-BR',
+  defaultLocale: 'pt-PE',
   directory: join(__dirname, '..', 'locales'),
   register: global,
 });

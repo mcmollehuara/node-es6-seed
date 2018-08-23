@@ -9,7 +9,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const i18n = require('./config/i18n');
-const { knex } = require('./config/db');
+const { knex } = require('./config/db.pg');
 const Settings = require('./config/Settings');
 const Logger = require('./helpers/Logger');
 
@@ -23,7 +23,7 @@ const app = express();
 const LoggerConfig = require('./config/LoggerConfig');
 
 /* Express utilites */
-app.set("port", "8080");
+// app.listen(4000);
 app.use(helmet());
 app.use(cors());
 app.use(compression());
