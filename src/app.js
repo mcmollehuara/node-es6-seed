@@ -62,7 +62,7 @@ app.all('*', (req, res) => {
 
 debug('load settings');
 (async () => {
-  await Settings.load();
+  // await Settings.load();
   await LoggerConfig.init();
 
   debug('Starting server');
