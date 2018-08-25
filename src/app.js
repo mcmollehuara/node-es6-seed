@@ -15,6 +15,8 @@ const Logger = require('./helpers/Logger');
 
 /* Routes */
 const userRoutes = require('./routes/user');
+const origenRoutes = require('./routes/origen');
+const destinoRoutes = require('./routes/destino');
 
 /* Express initialization */
 const app = express();
@@ -48,6 +50,8 @@ app.get(['/', '/status'], async (req, res) => {
 
 /* Instatiate routes */
 app.use('/user', userRoutes);
+app.use('/origen', origenRoutes);
+app.use('/destino', destinoRoutes);
 
 /* Log errors */
 LoggerConfig.expressError(app);
@@ -58,7 +62,7 @@ app.all('*', (req, res) => {
 
 debug('load settings');
 (async () => {
-  // await Settings.load();
+  await Settings.load();
   await LoggerConfig.init();
 
   debug('Starting server');
