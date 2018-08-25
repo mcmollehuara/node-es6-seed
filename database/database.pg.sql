@@ -89,3 +89,10 @@ VALUES (7, 'TARAPOTO', 1);
 
 INSERT INTO pasajes.origen(	id, nombre, condicion)
 VALUES (8, 'TRUJILLO', 1);
+
+
+select ROW_NUMBER () OVER (ORDER BY id), substring(nombre,POSITION('-' in nombre)+1, length(nombre)) nombre1, nombre
+from pasajes.ruta_viaje
+order by nombre asc
+														  
+--create view pasajes.origen_vw
