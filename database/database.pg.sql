@@ -137,3 +137,26 @@ create view pasajes.arrival_vw AS
 )
 
 	
+
+
+    select a.id
+, a.nombre as name
+, a.hora_salida
+, a.hora_llegada
+, b.nombre
+, c.precio_nivel1
+, c.precio_nivel2
+--,*
+from pasajes.itinerario a
+inner join pasajes.tipo_servicio_itinerario b on (a.id_tipo_servicio_viaje = b.id)
+inner join pasajes.precio_vigencia_itinerario c on (a.id = c.id_itinerario)
+where a.nombre like 'LIMA-%'
+and a.condicion = 1
+
+select * from pasajes.itinerario
+select * from pasajes.ruta_viaje
+select * from pasajes.precio_vigencia_itinerario
+select * from pasajes.vigencia_itinerario
+
+select * from public.departamento
+select * from public.provincia
