@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const i18n = require('./config/i18n');
 const { knex } = require('./config/db.pg');
-const Settings = require('./config/Settings');
+// const Settings = require('./config/Settings');
 const Logger = require('./helpers/Logger');
 
 /* Routes */
@@ -50,8 +50,8 @@ app.get(['/', '/status'], async (req, res) => {
 
 /* Instatiate routes */
 app.use('/user', userRoutes);
-app.use('/origen', origenRoutes);
-app.use('/destino', destinoRoutes);
+app.use('/origin', origenRoutes);
+app.use('/destination', destinoRoutes);
 
 /* Log errors */
 LoggerConfig.expressError(app);

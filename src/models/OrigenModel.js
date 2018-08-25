@@ -5,45 +5,45 @@ class OrigenModel {
 
   static list() {
     return knex
-    .from('origen')
-    .whereNot('origen.condicion', origenType.ACTIVO);
+    .from('pasajes.origen')
+    .whereNot('pasajes.origen.condicion', origenType.INACTIVO);
   }
 
   static get(id) {
     return knex
     .first('id, nombre')
-    .from('origen')
-    .where('origen.id', id)
-    .whereNot('origen.condicion', origenType.ACTIVO);
+    .from('pasajes.origen')
+    .where('pasajes.origen.id', id)
+    .whereNot('pasajes.origen.condicion', origenType.INACTIVO);
   }
 
   static post(data) {
     return knex
-    .from('origen')
+    .from('pasajes.origen')
     .insert(data);
   }
 
   static put(id, data) {
     const query = knex
-    .from('origen');
+    .from('pasajes.origen');
 
     if (data.nombre) {
       query.update('nombre', data.nombre);
     }
 
-    query.where('origen.id', id)
-    .whereNot('origen.condicion', origenType.DELETED);
+    query.where('pasajes.origen.id', id)
+    .whereNot('pasajes.origen.condicion', origenType.INACTIVO);
 
     return query;
   }
 
   static delete(id) {
     return knex
-    .from('origen')
-    .where('origen.id', id)
-    .whereNot('origen.condicion', origenType.INACTIVE)
+    .from('pasajes.origen')
+    .where('pasajes.origen.id', id)
+    .whereNot('pasajes.origen.condicion', origenType.INACTIVO)
     .update({
-      status: origenType.INACTIVE
+      condicion: origenType.INACTIVO
     });
   }
 

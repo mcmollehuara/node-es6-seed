@@ -5,45 +5,45 @@ class DestinoModel {
 
   static list() {
     return knex
-    .from('destino')
-    .whereNot('destino.condicion', destinoType.ACTIVO);
+    .from('pasajes.destino')
+    .whereNot('pasajes.destino.condicion', destinoType.INACTIVO);
   }
 
   static get(id) {
     return knex
     .first('id, nombre')
-    .from('destino')
-    .where('destino.id', id)
-    .whereNot('destino.condicion', destinoType.ACTIVO);
+    .from('pasajes.destino')
+    .where('pasajes.destino.id', id)
+    .whereNot('pasajes.destino.condicion', destinoType.INACTIVO);
   }
 
   static post(data) {
     return knex
-    .from('destino')
+    .from('pasajes.destino')
     .insert(data);
   }
 
   static put(id, data) {
     const query = knex
-    .from('destino');
+    .from('pasajes.destino');
 
     if (data.nombre) {
       query.update('nombre', data.nombre);
     }
 
     query.where('destino.id', id)
-    .whereNot('destino.condicion', destinoType.DELETED);
+    .whereNot('pasajes.destino.condicion', destinoType.INACTIVO);
 
     return query;
   }
 
   static delete(id) {
     return knex
-    .from('destino')
-    .where('destino.id', id)
-    .whereNot('destino.condicion', destinoType.INACTIVE)
+    .from('pasajes.destino')
+    .where('pasajes.destino.id', id)
+    .whereNot('pasajes.destino.condicion', destinoType.INACTIVO)
     .update({
-      status: destinoType.INACTIVE
+      condicion: destinoType.INACTIVO
     });
   }
 
