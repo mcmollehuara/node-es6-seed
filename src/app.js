@@ -15,8 +15,8 @@ const Logger = require('./helpers/Logger');
 
 /* Routes */
 const userRoutes = require('./routes/user');
-const origenRoutes = require('./routes/origen');
-const destinoRoutes = require('./routes/destino');
+const departureRoutes = require('./routes/departure');
+const arrivalRoutes = require('./routes/arrival');
 
 /* Express initialization */
 const app = express();
@@ -50,8 +50,8 @@ app.get(['/', '/status'], async (req, res) => {
 
 /* Instatiate routes */
 app.use('/user', userRoutes);
-app.use('/origin', origenRoutes);
-app.use('/destination', destinoRoutes);
+app.use('/departure', departureRoutes);
+app.use('/arrival', arrivalRoutes);
 
 /* Log errors */
 LoggerConfig.expressError(app);

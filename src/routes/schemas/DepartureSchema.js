@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const RouteValidator = require('../../middlewares/RouteValidator');
 
-class DestinoSchema extends RouteValidator {
+class DepartureSchema extends RouteValidator {
 
   static get get() {
     const schema = {
@@ -54,4 +54,4 @@ class DestinoSchema extends RouteValidator {
 
 }
 
-module.exports = DestinoSchema;
+module.exports = DepartureSchema;

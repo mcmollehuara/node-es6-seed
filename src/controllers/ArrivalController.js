@@ -1,11 +1,11 @@
 const Logger = require('../helpers/Logger');
-const OrigenService = require('../services/OrigenService');
+const ArrivalService = require('../services/ArrivalService');
 
-class OrigenController {
+class ArrivalController {
 
   static async list(req, res) {
     try {
-      const rows = await OrigenService.list();
+      const rows = await ArrivalService.list();
 
       res.send({ success: true, data: rows });
     } catch (err) {
@@ -15,18 +15,18 @@ class OrigenController {
 
   static async get(req, res) {
     try {
-      const origen = await OrigenService.get(req.params);
+      const arrival = await ArrivalService.get(req.params);
 
-      if (origen === null) {
+      if (arrival === null) {
         res.send({
           success: false,
           code: '7731668134',
-          message: req.__('api.origen.notFound'),
+          message: req.__('api.arrival.notFound'),
         });
         return;
       }
 
-      res.send({ success: true, data: origen });
+      res.send({ success: true, data: arrival });
     } catch (err) {
       Logger.throw(res, '6001059324', err);
     }
@@ -34,11 +34,11 @@ class OrigenController {
 
   static async post(req, res) {
     const data = {
-      nombre: req.body.nombre.trim(),
+      nombre: req.body.name.trim(),
     };
 
     try {
-      const [id] = await OrigenService.post(data);
+      const [id] = await ArrivalService.post(data);
       res.send({ success: true, data: { id } });
 
     } catch (err) {
@@ -53,13 +53,13 @@ class OrigenController {
     };
 
     try {
-      const success = await OrigenService.put(data);
+      const success = await ArrivalService.put(data);
 
       if (success === false) {
         res.send({
           success: false,
           code: '7502749763',
-          message: req.__('api.origen.notFound'),
+          message: req.__('api.arrival.notFound'),
         });
         return;
       }
@@ -76,13 +76,13 @@ class OrigenController {
     };
 
     try {
-      const success = await OrigenService.delete(data);
+      const success = await ArrivalService.delete(data);
 
       if (success === false) {
         res.send({
           success: false,
           code: '9517673561',
-          message: req.__('api.origen.notFound'),
+          message: req.__('api.arrival.notFound'),
         });
         return;
       }
@@ -94,4 +94,4 @@ class OrigenController {
   }
 }
 
-module.exports = OrigenController;
+module.exports = ArrivalController;

@@ -1,11 +1,11 @@
 const Logger = require('../helpers/Logger');
-const DestinoService = require('../services/DestinoService');
+const DepartureService = require('../services/DepartureService');
 
-class DestinoController {
+class DepartureController {
 
   static async list(req, res) {
     try {
-      const rows = await DestinoService.list();
+      const rows = await DepartureService.list();
 
       res.send({ success: true, data: rows });
     } catch (err) {
@@ -15,18 +15,18 @@ class DestinoController {
 
   static async get(req, res) {
     try {
-      const destino = await DestinoService.get(req.params);
+      const departure = await DepartureService.get(req.params);
 
-      if (destino === null) {
+      if (departure === null) {
         res.send({
           success: false,
           code: '7731668134',
-          message: req.__('api.destino.notFound'),
+          message: req.__('api.departure.notFound'),
         });
         return;
       }
 
-      res.send({ success: true, data: destino });
+      res.send({ success: true, data: departure });
     } catch (err) {
       Logger.throw(res, '6001059324', err);
     }
@@ -34,11 +34,11 @@ class DestinoController {
 
   static async post(req, res) {
     const data = {
-      nombre: req.body.name.trim(),
+      nombre: req.body.nombre.trim(),
     };
 
     try {
-      const [id] = await DestinoService.post(data);
+      const [id] = await DepartureService.post(data);
       res.send({ success: true, data: { id } });
 
     } catch (err) {
@@ -53,13 +53,13 @@ class DestinoController {
     };
 
     try {
-      const success = await DestinoService.put(data);
+      const success = await DepartureService.put(data);
 
       if (success === false) {
         res.send({
           success: false,
           code: '7502749763',
-          message: req.__('api.destino.notFound'),
+          message: req.__('api.departure.notFound'),
         });
         return;
       }
@@ -76,13 +76,13 @@ class DestinoController {
     };
 
     try {
-      const success = await DestinoService.delete(data);
+      const success = await DepartureService.delete(data);
 
       if (success === false) {
         res.send({
           success: false,
           code: '9517673561',
-          message: req.__('api.destino.notFound'),
+          message: req.__('api.departure.notFound'),
         });
         return;
       }
@@ -94,4 +94,4 @@ class DestinoController {
   }
 }
 
-module.exports = DestinoController;
+module.exports = DepartureController;

@@ -90,9 +90,50 @@ VALUES (7, 'TARAPOTO', 1);
 INSERT INTO pasajes.origen(	id, nombre, condicion)
 VALUES (8, 'TRUJILLO', 1);
 
+-- -- TODO
+-- Update pasajes.ruta_viaje
+-- set condicion = 1
 
-select ROW_NUMBER () OVER (ORDER BY id), substring(nombre,POSITION('-' in nombre)+1, length(nombre)) nombre1, nombre
-from pasajes.ruta_viaje
-order by nombre asc
-														  
---create view pasajes.origen_vw
+--drop view pasajes.departure_vw
+--select * from pasajes.departure_vw
+
+create view pasajes.departure_vw AS
+(	
+    select 
+    row_number() OVER (ORDER BY X.nombre) orderId
+    ,X.nombre as departure
+    ,X.condicion as status 
+    from 
+    (
+        select distinct
+        substring(nombre,0, POSITION('-' in nombre)) nombre
+        ,condicion									  
+        from pasajes.ruta_viaje
+        where condicion = 1
+        order by nombre							  
+    ) X		   
+)
+
+GO
+
+--drop view pasajes.arrival_vw
+--select * from pasajes.arrival_vw
+		
+create view pasajes.arrival_vw AS
+(	
+    select 
+    row_number() OVER (ORDER BY X.nombre) id
+    ,X.nombre as arrival
+    ,X.condicion as status 
+    from 
+    (
+        select distinct
+        substring(nombre,POSITION('-' in nombre)+1, length(nombre)) nombre
+        ,condicion									  
+        from pasajes.ruta_viaje
+        where condicion = 1
+        order by nombre							  
+    ) X		   
+)
+
+	
