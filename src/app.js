@@ -17,6 +17,7 @@ const Logger = require('./helpers/Logger');
 const userRoutes = require('./routes/user');
 const departureRoutes = require('./routes/departure');
 const arrivalRoutes = require('./routes/arrival');
+const itineraryRoutes = require('./routes/itinerary');
 
 /* Express initialization */
 const app = express();
@@ -52,6 +53,7 @@ app.get(['/', '/status'], async (req, res) => {
 app.use('/user', userRoutes);
 app.use('/departure', departureRoutes);
 app.use('/arrival', arrivalRoutes);
+app.use('/itinerary', itineraryRoutes);
 
 /* Log errors */
 LoggerConfig.expressError(app);
