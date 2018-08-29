@@ -11,6 +11,14 @@ class ItineraryModel {
     // .whereNot('pasajes.arrival_vw.status', arrivalType.INACTIVE);
   }
 
+  static item(id) {
+    let text = `${id}`
+    return knex
+    .from('pasajes.itinerary_vw')
+    .where('id', `${text}`)
+    // .whereNot('pasajes.arrival_vw.status', arrivalType.INACTIVE);
+  }
+
   static departure(name) {
     let text = `${name}`
     return knex

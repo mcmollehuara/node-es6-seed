@@ -14,6 +14,17 @@ class ItinerarySchema extends RouteValidator {
     return this.validate(schema);
   }
 
+  static get item() {
+    const schema = {
+      // params: Joi.object().keys({
+      //   departure: Joi.string().required(),
+      //   arrival: Joi.string().required()
+      // }),
+    };
+
+    return this.validate(schema);
+  }
+
   static get departure() {
     const schema = {
       // params: Joi.object().keys({

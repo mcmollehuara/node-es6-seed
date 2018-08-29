@@ -1,162 +1,57 @@
--- Table: pasajes.destino
+-- View: pasajes.arrival_vw
 
--- DROP TABLE pasajes.destino;
+-- DROP VIEW pasajes.arrival_vw;
 
-CREATE TABLE pasajes.destino
-(
-    id smallint NOT NULL DEFAULT nextval('pasajes.destino_id_seq'::regclass),
-    nombre character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    condicion smallint NOT NULL
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+CREATE OR REPLACE VIEW pasajes.arrival_vw AS
+ SELECT row_number() OVER (ORDER BY x.nombre) AS id,
+    x.nombre AS arrival,
+    x.condicion AS status
+   FROM ( SELECT DISTINCT "substring"(ruta_viaje.nombre::text, "position"(ruta_viaje.nombre::text, '-'::text) + 1, length(ruta_viaje.nombre::text)) AS nombre,
+            ruta_viaje.condicion
+           FROM pasajes.ruta_viaje
+          WHERE ruta_viaje.condicion = 1
+          ORDER BY ("substring"(ruta_viaje.nombre::text, "position"(ruta_viaje.nombre::text, '-'::text) + 1, length(ruta_viaje.nombre::text)))) x;
 
-ALTER TABLE pasajes.destino
-    OWNER to postgres;
-
-
-INSERT INTO pasajes.destino(	id, nombre, condicion)
-VALUES (1, 'CAJAMARCA', 1);
-
-INSERT INTO pasajes.destino(	id, nombre, condicion)
-VALUES (2, 'CHEPÉN', 1);
-
-INSERT INTO pasajes.destino(	id, nombre, condicion)
-VALUES (3, 'CHICLAYO', 1);
-
-INSERT INTO pasajes.destino(	id, nombre, condicion)
-VALUES (4, 'JAÉN', 1);
-
-INSERT INTO pasajes.destino(	id, nombre, condicion)
-VALUES (5, 'LIMA', 1);
-
-INSERT INTO pasajes.destino(	id, nombre, condicion)
-VALUES (6, 'PIURA', 1);
+ALTER TABLE pasajes.arrival_vw
+    OWNER TO postgres;
 
 
-INSERT INTO pasajes.destino(	id, nombre, condicion)
-VALUES (7, 'TARAPOTO', 1);
+-- View: pasajes.departure_vw
 
-INSERT INTO pasajes.destino(	id, nombre, condicion)
-VALUES (8, 'TRUJILLO', 1);
+-- DROP VIEW pasajes.departure_vw;
 
+CREATE OR REPLACE VIEW pasajes.departure_vw AS
+ SELECT row_number() OVER (ORDER BY x.nombre) AS id,
+    x.nombre AS departure,
+    x.condicion AS status
+   FROM ( SELECT DISTINCT "substring"(ruta_viaje.nombre::text, 0, "position"(ruta_viaje.nombre::text, '-'::text)) AS nombre,
+            ruta_viaje.condicion
+           FROM pasajes.ruta_viaje
+          WHERE ruta_viaje.condicion = 1
+          ORDER BY ("substring"(ruta_viaje.nombre::text, 0, "position"(ruta_viaje.nombre::text, '-'::text)))) x;
 
--- Table: pasajes.origen
-
--- DROP TABLE pasajes.origen;
-
-CREATE TABLE pasajes.origen
-(
-    id smallint NOT NULL DEFAULT nextval('pasajes.origen_id_seq'::regclass),
-    nombre character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    condicion smallint NOT NULL
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-
-ALTER TABLE pasajes.origen
-    OWNER to postgres;
+ALTER TABLE pasajes.departure_vw
+    OWNER TO postgres;
 
 
-    -- Origen Items
 
+-- View: pasajes.itinerary_vw
 
-    INSERT INTO pasajes.origen(	id, nombre, condicion)
-VALUES (1, 'CAJAMARCA', 1);
+-- DROP VIEW pasajes.itinerary_vw;
 
-INSERT INTO pasajes.origen(	id, nombre, condicion)
-VALUES (2, 'CHEPÉN', 1);
+CREATE OR REPLACE VIEW pasajes.itinerary_vw AS
+ SELECT c.id,
+    a.id AS itineraty_id,
+    a.nombre AS name,
+    a.hora_salida AS departure_hour,
+    a.hora_llegada AS arrivival_hour,
+    b.nombre AS service_name,
+    c.precio_nivel1 AS price_livel1,
+    c.precio_nivel2 AS price_livel2
+   FROM pasajes.itinerario a
+     JOIN pasajes.tipo_servicio_itinerario b ON a.id_tipo_servicio_viaje = b.id
+     JOIN pasajes.precio_vigencia_itinerario c ON a.id = c.id_itinerario AND a.condicion = 1 AND b.condicion = 1 AND c.condicion = 1;
 
-INSERT INTO pasajes.origen(	id, nombre, condicion)
-VALUES (3, 'CHICLAYO', 1);
+ALTER TABLE pasajes.itinerary_vw
+    OWNER TO postgres;
 
-INSERT INTO pasajes.origen(	id, nombre, condicion)
-VALUES (4, 'JAÉN', 1);
-
-INSERT INTO pasajes.origen(	id, nombre, condicion)
-VALUES (5, 'LIMA', 1);
-
-INSERT INTO pasajes.origen(	id, nombre, condicion)
-VALUES (6, 'PIURA', 1);
-
-
-INSERT INTO pasajes.origen(	id, nombre, condicion)
-VALUES (7, 'TARAPOTO', 1);
-
-INSERT INTO pasajes.origen(	id, nombre, condicion)
-VALUES (8, 'TRUJILLO', 1);
-
--- -- TODO
--- Update pasajes.ruta_viaje
--- set condicion = 1
-
---drop view pasajes.departure_vw
---select * from pasajes.departure_vw
-
-create view pasajes.departure_vw AS
-(	
-    select 
-    row_number() OVER (ORDER BY X.nombre) orderId
-    ,X.nombre as departure
-    ,X.condicion as status 
-    from 
-    (
-        select distinct
-        substring(nombre,0, POSITION('-' in nombre)) nombre
-        ,condicion									  
-        from pasajes.ruta_viaje
-        where condicion = 1
-        order by nombre							  
-    ) X		   
-)
-
-GO
-
---drop view pasajes.arrival_vw
---select * from pasajes.arrival_vw
-		
-create view pasajes.arrival_vw AS
-(	
-    select 
-    row_number() OVER (ORDER BY X.nombre) id
-    ,X.nombre as arrival
-    ,X.condicion as status 
-    from 
-    (
-        select distinct
-        substring(nombre,POSITION('-' in nombre)+1, length(nombre)) nombre
-        ,condicion									  
-        from pasajes.ruta_viaje
-        where condicion = 1
-        order by nombre							  
-    ) X		   
-)
-
-	
-
-
-    select a.id
-, a.nombre as name
-, a.hora_salida
-, a.hora_llegada
-, b.nombre
-, c.precio_nivel1
-, c.precio_nivel2
---,*
-from pasajes.itinerario a
-inner join pasajes.tipo_servicio_itinerario b on (a.id_tipo_servicio_viaje = b.id)
-inner join pasajes.precio_vigencia_itinerario c on (a.id = c.id_itinerario)
-where a.nombre like 'LIMA-%'
-and a.condicion = 1
-
-select * from pasajes.itinerario
-select * from pasajes.ruta_viaje
-select * from pasajes.precio_vigencia_itinerario
-select * from pasajes.vigencia_itinerario
-
-select * from public.departamento
-select * from public.provincia

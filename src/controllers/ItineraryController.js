@@ -13,6 +13,16 @@ class ItineraryController {
     }
   }
 
+  static async item(req, res) {
+    try {
+      const rows = await ItineraryService.item(req.params);
+
+      res.send({ success: true, data: rows });
+    } catch (err) {
+      Logger.throw(res, '327235841600', err);
+    }
+  }
+
   static async departure(req, res) {
     try {
       const rows = await ItineraryService.departure(req.params);

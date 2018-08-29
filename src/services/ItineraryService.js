@@ -14,6 +14,16 @@ class ItineraryService {
     return list;
   }
 
+  static async item(params) {
+    const item = await ItineraryModel.item(params.id);
+
+    const result = item.map(query => ({
+     
+    }));
+
+    return item;
+  }
+
   static async departure(params) {
     const list = await ItineraryModel.departure(params.name.toUpperCase());
 
