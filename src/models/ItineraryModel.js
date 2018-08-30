@@ -3,27 +3,11 @@ const { knex } = require('../config/db.pg');
 
 class ItineraryModel {
   
-  static list(departure, arrival) {
+  static list(arrival, departure) {
     let text = `${departure}-${arrival}`
     return knex
     .from('pasajes.itinerary_vw')
     .where('name', 'like', `${text}%`)
-    // .whereNot('pasajes.arrival_vw.status', arrivalType.INACTIVE);
-  }
-
-  static item(id) {
-    let text = `${id}`
-    return knex
-    .from('pasajes.itinerary_vw')
-    .where('id', `${text}`)
-    // .whereNot('pasajes.arrival_vw.status', arrivalType.INACTIVE);
-  }
-
-  static departure(name) {
-    let text = `${name}`
-    return knex
-    .from('pasajes.itinerary_vw')
-    .where('name', 'like', `${text}-%`)
     // .whereNot('pasajes.arrival_vw.status', arrivalType.INACTIVE);
   }
 
@@ -36,6 +20,21 @@ class ItineraryModel {
   }
 
 
+  static item(id) {
+    let query = `${id}`
+    return knex
+    .from('pasajes.itinerary_vw')
+    .where('id', `${query}`)
+    // .whereNot('pasajes.arrival_vw.status', arrivalType.INACTIVE);
+  }
+
+  // static departure(name) {
+  //   let text = `${name}`
+  //   return knex
+  //   .from('pasajes.itinerary_vw')
+  //   .where('name', 'like', `${text}-%`)
+  //   // .whereNot('pasajes.arrival_vw.status', arrivalType.INACTIVE);
+  // }
 }
 
 module.exports = ItineraryModel;
